@@ -39,15 +39,45 @@ async function getAllBooks(req,res){
 
 async function updateBookById (req,res){
     try {
-        const reqBody={
-            bookId :req.params.id,
-            stock : req.body.stock
-                    }
-                    console.log("======"+reqBody);
+       
+    const reqBody = {
+        bookId:req.params.id ,
+        bookName:req.body.bookName,
+        bookPrice:req.body.bookPrice,
+        stock:req.body.stock
+    }
     const response = await BookService.updateBookById(reqBody)
-    res.status(200).send(response)
+    res.status(200)
+    .send({
+        response:"Updated successFully"
+    })
     } catch (err) {
         throw err
     }
 }
-module.exports = {createBook , getAllBooks , updateBookById}
+
+async function deleteBookById(req,res){
+    try {
+    const response = await BookService.deleteBookById(req.params.id)
+    res.status(200)
+    .json({
+         response
+        })
+    } catch (err) {
+        throw err ;
+    }
+}
+
+async function getbookByName(req,res){
+    try {
+        const bookName = req.query ;
+        const result = await BookService.getbookByName(bookName);
+        res.status(200)
+        .send({
+            response:result
+        })
+    } catch (err) {
+        throw err ;
+    }
+}
+module.exports = {createBook , getAllBooks , updateBookById ,deleteBookById ,getbookByName}

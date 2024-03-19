@@ -18,7 +18,8 @@ async function mailValidation(email) {
 
 async function comparePasswords(password,hashedPassword) {
     try {
-        const res  =   bcrypt.compare(password,hashedPassword);
+        console.log(password+"<+++++++>"+hashedPassword);
+        const res  =await   bcrypt.compare(password,hashedPassword);
         return res ;
     } catch (err) {
         throw err ;

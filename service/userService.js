@@ -16,18 +16,20 @@ async function userRegister(userInfo){
 
 async function userLogin(email,password){
     try {
+        console.log( email + "<====>" + password);
        const userMail = await userValidation.mailValidation(email,password)
+       console.log("usermail"+userMail);
        if(userMail.length==0){
          return ('user not found')
        }
-       const validPassword = await userValidation.comparePasswords(password,userMail.password)
+       console.log("**********"+ typeof userMail.password);
+       console.log("PASSWORD"+password);
+       const validPassword = await userValidation.comparePasswords(password, userMail.password)
        if(validPassword){
-                // const token = jwt.sign({ role: email.role }, process.env.TOKEN_SEC,{ expiresIn: '1h' });
                 const token = jwt.sign({ role: userMail.role }, process.env.TOKEN_SEC, { expiresIn: '1h' });
                 console.log("TOKEN GEN"+token);
                 return token ;
        }
-
        if(!validPassword){
         return ('invalid password') ;
        }

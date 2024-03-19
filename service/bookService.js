@@ -1,3 +1,4 @@
+const { Sequelize } = require('sequelize');
 const connectToDb = require('../connection/db_config.js')
 const {Books ,Users} =  connectToDb();
 
@@ -46,20 +47,54 @@ async function getAllBooks(limit,offset){
 }
 
 
-async function updateBookById(reqBody){
+async function updateBookById(reqBody ){
     try {
-        console.log("REQBODY"+reqBody);
-        const result = await Books.update({
-            where:{bookId:reqBody.bookId}
-        })
-        return result ;
         
+        const result = await Books.update(
+             {
+                bookName:reqBody.bookName,
+                bookPrice:reqBody.bookPrice,
+                stock:reqBody.stock
+            },
+           { where:{bookId:reqBody.bookId},returning :true } 
+        )
+        return result ;
+    } catch (err) { 
+        throw err ;
+    }
+}
+
+async function deleteBookById(id){
+    try {
+        const result = await Books.destroy({
+            where:{
+                bookId:id
+            }
+        })
+        return result
     } catch (err) {
         throw err ;
     }
 }
 
-module.exports = {createBook , getAllBooks ,updateBookById}; 
+async function getbookByName(search){
+    try {
+        console.log(search);
+        const result = await Books.findOne({
+            where:{
+                //bookName:search
+                bookName:{
+                    [Sequelize.Op.like]: `%${search}%`
+                }
+            }
+        })
+        console.log("+++++>"+result);
+        return result ;
+    } catch (err) {
+        throw err ;
+    }
+}
+module.exports = {createBook , getAllBooks ,updateBookById , deleteBookById ,getbookByName}; 
 
 
 

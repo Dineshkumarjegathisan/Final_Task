@@ -6,7 +6,9 @@ const { isAuthorization } = require('../middleware/isAuthorization.js');
 
 router.post('/createBook',authandicate,isAuthorization('admin'),BookController.createBook)
 router.get('/getAllBooks',authandicate,isAuthorization('admin','staff','reader'),BookController.getAllBooks)
-router.put('/updateBookById/:id',authandicate,isAuthorization('admin','staff'),BookController.updateBookById)
+router.put('/updateBookById/:id',authandicate,isAuthorization('admin', 'staff'),BookController.updateBookById)
+router.delete('/deleteBookBy/:id',authandicate,isAuthorization('admin' ,'staff'),BookController.deleteBookById)
+router.get('/getbookByName',BookController.getbookByName)
 
 
 module.exports = router ;
